@@ -247,7 +247,7 @@ playerUtils.prepareForAds = function (player) {
       /*** local functions ***/
       function firstPlay() {
         if (!utilities.isIPhone()) {
-          volumeSnapshot = saveVolumeSnapshot();
+          volumeSnapshot = (volumeSnapshot)? volumeSnapshot:saveVolumeSnapshot();
           player.muted(true);
         }
 
