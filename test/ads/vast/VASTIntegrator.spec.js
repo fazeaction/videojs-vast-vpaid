@@ -54,7 +54,7 @@ describe("VASTIntegrator", function () {
     beforeEach(function () {
       sinon.stub(vastUtil, 'track', utilities.noop);
       player = videojs(document.createElement('video'), {});
-      vastIntegrator = new VASTIntegrator(player);
+      vastIntegrator = new VASTIntegrator(player,{});
       callback = sinon.spy();
     });
 

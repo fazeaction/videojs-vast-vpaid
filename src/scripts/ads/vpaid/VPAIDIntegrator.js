@@ -418,15 +418,22 @@ VPAIDIntegrator.prototype._setupEvents = function (adUnit, vastResponse, next) {
 VPAIDIntegrator.prototype._addSkipButton = function (adUnit, vastResponse, next) {
   var skipButton;
   var player = this.player;
+  var skipButtonHackEnabled=false;
 
   adUnit.on('AdSkippableStateChange', updateSkipButtonState);
+
+  if(this.settings.forceSkipButton) {
+    setTimeout(function () {
+      updateSkipButtonState(true);
+    }, this.settings.adCancelTimeout);
+  }
 
   playerUtils.once(player, ['vast.adEnd', 'vast.adsCancel'], removeSkipButton);
 
   next(null, adUnit, vastResponse);
 
   /*** Local function ***/
-  function updateSkipButtonState() {
+  function updateSkipButtonState(customHack) {
     player.trigger('vpaid.AdSkippableStateChange');
     adUnit.getAdSkippableState(function (error, isSkippable) {
       if (isSkippable) {
@@ -434,7 +441,12 @@ VPAIDIntegrator.prototype._addSkipButton = function (adUnit, vastResponse, next)
           addSkipButton(player);
         }
       } else {
-        removeSkipButton(player);
+        if(customHack && !skipButton){
+          skipButtonHackEnabled=true;
+          addSkipButton(player);
+        }else {
+          removeSkipButton(player);
+        }
       }
     });
   }

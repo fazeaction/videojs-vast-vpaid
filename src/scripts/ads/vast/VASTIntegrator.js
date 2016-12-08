@@ -21,12 +21,13 @@ var utilities = require('../../utils/utilityFunctions');
 
 var logger = require ('../../utils/consoleLogger');
 
-function VASTIntegrator(player) {
+function VASTIntegrator(player,settings) {
   if (!(this instanceof VASTIntegrator)) {
     return new VASTIntegrator(player);
   }
 
   this.player = player;
+  this.settings = settings;
 }
 
 VASTIntegrator.prototype.playAd = function playAd(vastResponse, callback) {
@@ -184,6 +185,11 @@ VASTIntegrator.prototype._setupEvents = function setupEvents(adMediaFile, tracke
 VASTIntegrator.prototype._addSkipButton = function addSkipButton(source, tracker, response, callback) {
   var skipOffsetInSec;
   var that = this;
+
+  console.log(this.settings);
+  if(this.settings.forceSkipButton){
+    response.skipoffset=this.settings.adCancelTimeout;
+  }
 
   if (utilities.isNumber(response.skipoffset)) {
     skipOffsetInSec = response.skipoffset / 1000;

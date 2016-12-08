@@ -259,7 +259,7 @@ module.exports = function VASTPlugin(options) {
       return;
     }
 
-    var adIntegrator = isVPAID(vastResponse) ? new VPAIDIntegrator(player, settings) : new VASTIntegrator(player);
+    var adIntegrator = isVPAID(vastResponse) ? new VPAIDIntegrator(player, settings) : new VASTIntegrator(player, settings);
     var adFinished = false;
 
     playerUtils.once(player, ['vast.adStart', 'vast.adsCancel'], function (evt) {
